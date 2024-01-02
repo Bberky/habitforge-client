@@ -1,8 +1,14 @@
+@use "reset";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  #__next {
+    @apply h-screen;
+  }
+
   .container {
     @apply mx-auto;
   }
