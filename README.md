@@ -1,40 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# HabitForge Client
 
-## Getting Started
+## Running the app
 
-First, run the development server:
+The app runs on port 3000 by default (can be changed using docker) and is
+accessible at http://localhost:3000
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```sh
+$ docker build -t habitforge-client .
+$ docker run habitforge-client
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Using the app
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+First you must create an account and then sign in, if you're not signed in,
+the app won't let you anywhere else except auth pages.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+On the home page, you will see two buttons, _New Tag_ which opens a modal
+where new tag can be created (and later assigned to habit) and _New Habit_.
+The latter will open a modal where you can either choose from a list of
+already created habits, or click on _+_ to create a new habit. Then, if
+applicable, you will fill out fields for the new habit, as well as fields for
+the record between you as an user and habit you want to track. These are
+goal interval, which means how often a goal should be achieved and goal
+thershold, which represent the target value to reach the goal. For example,
+you want to run 50km weekly, you will create running habit with km as unit,
+set goal interval to weekly and goal threshold to 50.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+On the home page you will also see all your tracked habits. On each card there
+are four buttons. By clicking on the first one, you can create a new entry (e.g.
+you ran *5*km). By clicking on the second one, you can assign tags to a habit (
+beware that tags are assigned to the habit, not just your track relation). By
+clicking on the third one, you can visit the detail page where you can see all your
+entries for that specific user habit relation. By clicking on the fourth one,
+you can delete your tracking of that specific habit.
