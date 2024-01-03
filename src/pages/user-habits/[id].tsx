@@ -42,10 +42,7 @@ const UserHabitPage: NextPage = () => {
             <Button
               type="primary"
               className="mb-4"
-              onClick={() => {
-                console.log("asd");
-                setIsCreatingNewEntry(true);
-              }}
+              onClick={() => setIsCreatingNewEntry(true)}
             >
               New Entry
             </Button>
