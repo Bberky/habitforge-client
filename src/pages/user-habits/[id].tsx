@@ -12,12 +12,13 @@ import {
   useGetUserHabitCompletion,
 } from "@/services/api/user-habits";
 import { DeleteOutlined } from "@ant-design/icons";
-import { Button, Flex, Menu, Progress, Table, Typography } from "antd";
+import { App, Button, Flex, Menu, Progress, Table, Typography } from "antd";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 
 const UserHabitPage: NextPage = () => {
+  const { message } = App.useApp();
   const router = useRouter();
   const { id } = router.query;
   const { data, isLoading } = useGetHabitEntries(parseInt(id as string));
@@ -39,17 +40,31 @@ const UserHabitPage: NextPage = () => {
       case "entries":
         return (
           <>
-            <Button
-              type="primary"
-              className="mb-4"
-              onClick={() => setIsCreatingNewEntry(true)}
-            >
-              New Entry
-            </Button>
+            <Flex align="center" gap={24} className="mb-4">
+              <Button
+                type="primary"
+                onClick={() => setIsCreatingNewEntry(true)}
+              >
+                New Entry
+              </Button>
+              <Typography.Text>
+                Total: {data?.reduce((i, e) => i + e.value, 0)} {habit?.unit}
+              </Typography.Text>
+            </Flex>
             <Table<HabitEntry>
               loading={isLoading}
               dataSource={data}
               rowKey="id"
+              summary={(data) => (
+                <Table.Summary>
+                  <Table.Summary.Row>
+                    <Table.Summary.Cell index={0}>Total</Table.Summary.Cell>
+                    <Table.Summary.Cell index={1}>
+                      {data.reduce((acc, curr) => acc + curr.value, 0)}
+                    </Table.Summary.Cell>
+                  </Table.Summary.Row>
+                </Table.Summary>
+              )}
               bordered
               columns={[
                 {
@@ -66,6 +81,7 @@ const UserHabitPage: NextPage = () => {
                       icon={<DeleteOutlined />}
                       onClick={async () => {
                         await deleteEntry(r.id);
+                        message.success("Entry deleted");
                         await updateCompletion();
                       }}
                     />
@@ -78,7 +94,15 @@ const UserHabitPage: NextPage = () => {
       case "settings":
         return null;
     }
-  }, [data, deleteEntry, isLoading, selectedMenuItem, updateCompletion]);
+  }, [
+    data,
+    deleteEntry,
+    habit?.unit,
+    isLoading,
+    message,
+    selectedMenuItem,
+    updateCompletion,
+  ]);
 
   return (
     <HomeLayout>
@@ -95,6 +119,14 @@ const UserHabitPage: NextPage = () => {
             <Typography.Text type="secondary">[{habit?.unit}]</Typography.Text>
           </Typography.Title>
           <Typography.Text>{habit?.description}</Typography.Text>
+        </Flex>
+        <Flex vertical>
+          <Typography.Text>
+            Goal interval: {userHabit?.goalInterval}
+          </Typography.Text>
+          <Typography.Text>
+            Goal threshold: {userHabit?.goalThreshold}
+          </Typography.Text>
         </Flex>
       </Flex>
       <Menu
