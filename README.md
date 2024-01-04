@@ -7,7 +7,7 @@ accessible at http://localhost:3000
 
 ```sh
 $ docker build -t habitforge-client .
-$ docker run habitforge-client
+$ docker run -p"3000:3000" habitforge-client
 ```
 
 ## Using the app
