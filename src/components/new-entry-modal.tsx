@@ -1,6 +1,6 @@
 import { useCreateHabitEntryMutation } from "@/services/api/habit-entry";
 import { useGetUserHabitCompletion } from "@/services/api/user-habits";
-import { InputNumber, Modal } from "antd";
+import { App, InputNumber, Modal } from "antd";
 import { FC, useState } from "react";
 
 type NewEntryModalProps = {
@@ -10,6 +10,7 @@ type NewEntryModalProps = {
 };
 
 export const NewEntryModal: FC<NewEntryModalProps> = (props) => {
+  const { message } = App.useApp();
   const { open, onCancel, userHabitId } = props;
   const [entry, setEntry] = useState<null | number>(null);
   const { trigger: create } = useCreateHabitEntryMutation(userHabitId);
@@ -25,6 +26,7 @@ export const NewEntryModal: FC<NewEntryModalProps> = (props) => {
       onOk={async () => {
         if (entry === null) return;
         await create({ value: entry! });
+        message.success("Entry created");
         await updateCompletion();
         setEntry(null);
         onCancel();
