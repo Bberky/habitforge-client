@@ -1,5 +1,5 @@
 import { useAddHabitTagMutation, useGetTags } from "@/services/api/tags";
-import { Modal } from "antd";
+import { App, Modal } from "antd";
 import { FC } from "react";
 
 type AssignTagModalProps = {
@@ -10,6 +10,7 @@ type AssignTagModalProps = {
 };
 
 export const AssignTagModal: FC<AssignTagModalProps> = (props) => {
+  const { message } = App.useApp();
   const { open, onCancel, habitId, assignedTags } = props;
   const { data: tags } = useGetTags();
   const { trigger: assignTag } = useAddHabitTagMutation(habitId);
@@ -24,6 +25,7 @@ export const AssignTagModal: FC<AssignTagModalProps> = (props) => {
             className="flex items-center space-x-2 hover:bg-slate-300 rounded-lg px-4 py-1 cursor-pointer"
             onClick={async () => {
               await assignTag(i.id);
+              message.success("Tag assigned");
               onCancel();
             }}
           >
