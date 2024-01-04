@@ -4,7 +4,7 @@ import {
   useCreateUserHabitMutation,
 } from "@/services/api/user-habits";
 import { useGetLoggedUser } from "@/services/api/users";
-import { Button, Form, Input, Select } from "antd";
+import { App, Button, Form, Input, Select } from "antd";
 import { FC } from "react";
 
 type NewHabitFormProps = {
@@ -15,6 +15,7 @@ type NewHabitFormProps = {
 export const NewHabitForm: FC<NewHabitFormProps> = ({ habit, onFinish }) => {
   const [form1] = Form.useForm();
   const [form2] = Form.useForm();
+  const { message } = App.useApp();
   const { trigger: createHabit, data } = useCreateHabitMutation();
   const { trigger: createUserHabit } = useCreateUserHabitMutation();
   const { data: user } = useGetLoggedUser();
@@ -34,13 +35,14 @@ export const NewHabitForm: FC<NewHabitFormProps> = ({ habit, onFinish }) => {
       </Form>
       <Form
         form={form2}
-        onFinish={async (val) =>
+        onFinish={async (val) => {
           await createUserHabit({
             ...val,
             user_id: user!.id,
             habitId: habit?.id ?? data?.id,
-          })
-        }
+          });
+          message.success("Habit created");
+        }}
       >
         <Form.Item name="goalInterval" rules={[{ required: true }]}>
           <Select
@@ -91,6 +93,7 @@ export const NewHabitForm: FC<NewHabitFormProps> = ({ habit, onFinish }) => {
             userId: user!.id,
             habitId: habitId,
           });
+          message.success(`Started tracking ${form1.getFieldValue("name")}}`);
 
           onFinish();
         }}
