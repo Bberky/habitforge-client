@@ -2,7 +2,7 @@
 
 ## Running the app
 
-The app expects to be able to reach API at http://localhost:8080 (https://gitlab.fit.cvut.cz/berkeada/habitforge-server)
+The app expects to be able to reach API at http://localhost:8080 (https://github.com/Bberky/habitforge-server)
 
 The app runs on port 3000 by default (can be changed using docker) and is
 accessible at http://localhost:3000
